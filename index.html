@@ -2,37 +2,59 @@
 <html>
     <head>
         <meta charset="UTF-8"/>
-        <title>React tutorial</title>
+        <title>tic-tac-toe</title>
         <script src="https://fb.me/react-0.14.7.js"></script>
         <script src="https://fb.me/react-dom-0.14.7.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.2/browser.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        
     </head>
     <body>
         <div id="app"></div>
         <script type="text/babel">
         var TicTacToe = React.createClass({
+            getInitialState: function(){
+                return ({
+                    highlight: false,
+                    player: "x"
+                })            
+            },
             render: function(){
                 return(
-                    <table>
-                        <tr>
-                            <td>x</td>
-                            <td>x</td>
-                            <td>o</td>
-                        </tr>
-                        <tr>
-                            <td>x</td>
-                            <td>o</td>
-                            <td>o</td>
-                        </tr>
-                        <tr>
-                            <td>o</td>
-                            <td>o</td>
-                            <td>x</td>
-                        </tr>
-                    </table>
+                    <Square highlighted={this.state.highlight} text={this.state.player} />
                 )
             }
+
         });
+
+        var Square = React.createClass({
+            getDefaultProps: function(){
+                return({
+                    highlighted: false,
+                    text: ' '
+                })
+            },
+            getInitialState: function(){
+                return({
+                    highlighted: this.props.highlighted,
+                    text: this.props.text
+                })
+            },
+            render: function(){
+                if(this.state.highlighted){
+                    return (<button onClick={this.toggleState} className="btn btn-primary">{this.state.text}</button>)
+                }else{
+                    return (<button onClick={this.toggleState} className="btn">_</button>)
+                }  
+            },
+            toggleState: function(){
+                if(!this.state.highlighted){
+                    this.setState({highlighted: !this.state.highlighted})
+                }
+            }
+
+        })
+
         ReactDOM.render(
             <TicTacToe/>,
             document.getElementById("app")
